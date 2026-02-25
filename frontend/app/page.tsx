@@ -1,7 +1,9 @@
 'use client'
 import { useState } from 'react'
 
-const API = process.env.NEXT_PUBLIC_API_URL || 'https://onehack-loot-oracle-production.up.railway.app'
+// Use local Next.js API route (serverless) — no separate backend needed
+// Set NEXT_PUBLIC_API_URL to override with an external backend (e.g. Railway)
+const API = (process.env.NEXT_PUBLIC_API_URL ?? '') + '/api/recommend'
 
 const CLASSES = ['Warrior','Mage','Rogue','Ranger','Paladin']
 const STYLES = ['aggressive','defensive','support','explorer']
@@ -53,7 +55,7 @@ export default function Home() {
     setError('')
     setResult(null)
     try {
-      const res = await fetch(`${API}/recommend`, {
+      const res = await fetch(API, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ level, player_class: playerClass, play_style: playStyle, preferred_element: element || null, gold }),
