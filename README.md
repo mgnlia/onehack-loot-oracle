@@ -1,65 +1,107 @@
-# ⚔️ Loot Oracle — AI GameFi Loot Recommendation Engine
+# 🎰 OneHack Loot Oracle
 
-> **OneHack 3.0 Hackathon Entry · AI Track · $16.1K USDT Prize Pool**
+**AI-Powered GameFi Item Intelligence on OneChain**
 
-An AI-powered loot recommendation engine for GameFi players. Input your player profile (level, class, play style, element preference) and receive personalized gear recommendations scored by an ML engine, optionally enhanced by Claude 3 Haiku.
+Built for [OneHack 3.0](https://dorahacks.io/hackathon/onehackathon) — $16,100 USDT prize pool.
 
-## 🚀 Live Demo
+## 🏆 What It Does
 
-- **Frontend**: https://onehack-loot-oracle.vercel.app
-- **Backend API**: https://onehack-loot-oracle-production.up.railway.app
-- **API Docs**: https://onehack-loot-oracle-production.up.railway.app/docs
+The **OneHack Loot Oracle** combines on-chain verifiable randomness with AI behavior scoring to create a fair, intelligent loot system for GameFi applications on OneChain.
+
+### Core Features
+- 🎲 **On-Chain Randomness** — Loot seeds derived from OneChain block hashes (tamper-proof)
+- 🤖 **AI Behavior Scoring** — GPT-4 analyzes player history and scores item synergy
+- ⚖️ **Rarity Engine** — Weighted probability curves (Common → Mythic)
+- 🎯 **GameFi Recommender** — Personalized item recommendations based on play style
+- 📊 **Loot Analytics** — Track session history, tier progression, item performance
 
 ## 🏗️ Architecture
 
 ```
-Frontend (Next.js 14 + Tailwind CSS)  →  Backend (FastAPI + Python 3.11)
-           Vercel                                   Railway (Docker)
+┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
+│  React Frontend │───▶│  FastAPI Backend  │───▶│  OneChain RPC   │
+│  (Vercel)       │    │  (Railway)        │    │  (Move VM)      │
+└─────────────────┘    └──────────────────┘    └─────────────────┘
+                               │
+                               ▼
+                        ┌──────────────┐
+                        │  GPT-4 API   │
+                        │  (AI Scoring)│
+                        └──────────────┘
 ```
 
-## 🎮 Features
+## 📁 Project Structure
 
-- **5 player classes**: Warrior, Mage, Rogue, Ranger, Paladin
-- **4 play styles**: aggressive, defensive, support, explorer
-- **5 elemental affinities**: Fire, Ice, Lightning, Dark, Light
-- **15 unique loot items** across 4 rarity tiers (Rare → Legendary)
-- **AI scoring engine**: class match + style + element affinity + level gating
-- **Claude 3 Haiku** narrative layer (set `ANTHROPIC_API_KEY` env var)
-- Rarity-coded item cards with match score bars
+```
+onehack-loot-oracle/
+├── contracts/           # Move smart contracts
+│   ├── sources/
+│   │   └── loot_oracle.move    # Main loot oracle contract
+│   └── Move.toml
+├── backend/             # FastAPI AI scoring service
+│   ├── main.py          # API endpoints
+│   ├── loot_engine.py   # Loot generation logic
+│   ├── ai_scorer.py     # GPT-4 scoring
+│   ├── recommender.py   # GameFi recommender
+│   └── requirements.txt
+└── frontend/            # React + Vite UI
+    ├── src/
+    │   ├── App.tsx
+    │   └── App.css
+    └── package.json
+```
 
-## 🛠️ Local Development
+## 🚀 Quick Start
 
 ### Backend
 ```bash
 cd backend
-pip install uv
-uv pip install --system fastapi "uvicorn[standard]" pydantic anthropic
+pip install -r requirements.txt
+export OPENAI_API_KEY=your_key
 uvicorn main:app --reload
-# API at http://localhost:8000/docs
 ```
 
 ### Frontend
 ```bash
 cd frontend
 npm install
-NEXT_PUBLIC_API_URL=http://localhost:8000 npm run dev
-# UI at http://localhost:3000
+npm run dev
 ```
 
-## 📡 API Example
+## 🔗 Move Contract
 
-```bash
-curl -X POST https://onehack-loot-oracle-production.up.railway.app/recommend \
-  -H "Content-Type: application/json" \
-  -d '{
-    "level": 65,
-    "player_class": "Mage",
-    "play_style": "aggressive",
-    "preferred_element": "Lightning",
-    "gold": 10000
-  }'
-```
+The `LootOracle` Move contract on OneChain provides:
+- `roll_loot(player, session_id, seed)` — Generate loot with on-chain randomness
+- `get_player_stats(player)` — Query player loot history
+- `verify_drop(session_id)` — Verify a loot drop is legitimate
 
-## 🏆 Hackathon
+OneChain is Sui-compatible — deploy using Sui CLI targeting OneChain testnet RPC.
 
-Built for **OneHack 3.0** (March 2026) · AI & GameFi Track
+## 🌐 Live Demo
+
+- **Frontend**: https://onehack-loot-oracle.vercel.app
+- **API**: https://onehack-loot-oracle-api.up.railway.app
+- **API Docs**: https://onehack-loot-oracle-api.up.railway.app/docs
+
+## 🛠️ Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Blockchain | OneChain (Sui-compatible Move VM) |
+| Smart Contracts | Move language |
+| Backend | Python, FastAPI, GPT-4 |
+| Frontend | React, TypeScript, Vite |
+| Backend Deploy | Railway |
+| Frontend Deploy | Vercel |
+
+## 🎮 Why This Wins
+
+1. **Novel**: First AI-scored loot oracle on OneChain
+2. **Fair**: On-chain randomness = no server manipulation
+3. **Smart**: GPT-4 understands item synergies and play styles
+4. **Complete**: Full stack — contracts, API, UI, deployment
+5. **Extensible**: Any GameFi project can integrate via API
+
+## 📄 License
+
+MIT
